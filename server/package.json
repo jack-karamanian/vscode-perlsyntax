@@ -3,6 +3,7 @@
   "description": "Perl error and warning highlighter for Visual Studio Code.",
   "version": "0.0.1",
   "author": "Jack Karamanian",
+  "publisher": "",
   "license": "MIT",
   "engines": {
     "node": "*",
@@ -12,7 +13,8 @@
     "@types/lodash": "^4.14.72",
     "lodash": "^4.17.4",
     "vscode": "^1.1.6",
-    "vscode-languageserver": "^3.0.4"
+    "vscode-languageserver": "^3.4.0",
+    "vscode-languageserver-protocol": "^3.4.0"
   },
   "devDependencies": {
     "@types/node": "^6.0.52",

@@ -44,6 +44,16 @@
           "type": "array",
           "default": [],
           "description": "Additional options to pass to the Perl executable."
+        },
+        "perlSyntax.relativePaths": {
+          "type": "array",
+          "default": [],
+          "description": "Additional include paths relative to the project root directory"
+        },
+        "perlSyntax.cwd": {
+          "type": "string",
+          "default": "",
+          "description": "Directory to switch to when running syntax check relative to project root directory"
         }
       }
     }
@@ -61,6 +71,9 @@
     "vscode": "^1.1.5"
   },
   "dependencies": {
-    "vscode-languageclient": "3.2.1"
+    "lodash": "^4.17.5",
+    "vscode-languageclient": "3.2.1",
+    "vscode-languageserver": "^3.4.0",
+    "vscode-languageserver-protocol": "^3.4.0"
   }
 }

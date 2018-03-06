@@ -15,7 +15,10 @@ export class PerlLinter {
         public perlExecutable: string,
         public includePaths: string[],
         public perlOptions: string[],
-        public prependCode: string[]
+        public prependCode: string[],
+        public workspaceRoot: string,
+        public relativePaths: string[],
+        public cwd: string,
     ) {
         this.documentProcesses = {};
     }
@@ -28,10 +31,24 @@ export class PerlLinter {
         if (process) {
             process.kill('SIGINT');
         }
+        var process_1 = require('process');
+        var olddir = process_1.cwd();
+        // console.log("olddir: "+olddir);
+        if (this.cwd)
+        {
+            console.log("cd to: "+this.workspaceRoot+"/"+this.cwd);
+            try {
+                process_1.chdir(this.workspaceRoot+'/'+this.cwd);
+            }
+            catch(e){
+                console.log(e);
+            }
+        }
 
         this.documentProcesses[uri] = process = childProcess.spawn(
             this.perlExecutable,
-            ['-c', ...this.perlOptions, ...this.includePaths.map(path => '-I' + path)]
+            ['-c', ...this.perlOptions, ...this.includePaths.map(path => '-I' + path),
+            ...this.relativePaths.map(path=>'-I'+this.workspaceRoot+'/'+path)]
         );
 
         process.stdin.on('error', (err: Error) => {
@@ -81,6 +98,12 @@ export class PerlLinter {
         process.stdin.write(this.prependCode.join(''));
         process.stdin.write(text);
         process.stdin.end("\x04");
+        try {
+            process_1.chdir(olddir);
+        } 
+        catch(e){
+            console.log(e);
+        }
     }
 
     private extractLineNumber(line: string): number {
