@@ -20,7 +20,7 @@ import { PerlLinter } from './PerlLinter';
 
 // Create a connection for the server. The connection uses Node's IPC as a transport
 let connection: IConnection = createConnection(new IPCMessageReader(process), new IPCMessageWriter(process));
-const linter: PerlLinter = new PerlLinter('perl', [], [], []);
+const linter: PerlLinter = new PerlLinter('perl', [], [], [], '',[],'');
 // Create a simple text document manager. The text document manager
 // supports full document sync only
 let documents: TextDocuments = new TextDocuments();
@@ -60,6 +60,9 @@ interface PerlSyntaxSettings {
 	includePaths: string[],
 	prependCode: string[],
 	additionalOptions: string[],
+	relativePaths: string[],
+	cwd: string,
+
 }
 
 let settin
@@ -74,6 +77,9 @@ connection.onDidChangeConfiguration((change) => {
 	linter.includePaths = settings.perlSyntax.includePaths;
 	linter.perlOptions = settings.perlSyntax.additionalOptions;
 	linter.prependCode = settings.perlSyntax.prependCode;
+	linter.workspaceRoot = workspaceRoot;
+	linter.relativePaths = settings.perlSyntax.relativePaths;
+	linter.cwd = settings.perlSyntax.cwd;
 	// Revalidate any open text documents
 	documents.all().forEach(validateTextDocument);
 });
